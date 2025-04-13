@@ -22,7 +22,7 @@ const Index = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  // Configuration
+  // Configuration for n8n webhook
   const USE_PRODUCTION = false; // Set to true for production webhook
   const WEBHOOK_URL = USE_PRODUCTION 
     ? 'https://nvrtest4.app.n8n.cloud/webhook/7386adac-d1dc-4e32-81dc-f0487aa8d9ca'
@@ -110,24 +110,28 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-background to-secondary/20 animate-fade-in">
       <Header />
       
       <main className="flex-1 flex flex-col max-w-5xl w-full mx-auto bg-pattern">
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 scrollbar-none">
           {messages.length === 0 ? (
             <ChatWelcome />
           ) : (
-            <div className="max-w-3xl mx-auto w-full">
+            <div className="max-w-3xl mx-auto w-full space-y-4">
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+                <ChatMessage 
+                  key={message.id} 
+                  message={message} 
+                  className="animate-slide-in-right"
+                />
               ))}
             </div>
           )}
           
           {isLoading && (
             <div className="flex justify-center py-4 animate-fade-in">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/30 backdrop-blur-sm">
                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                 <span className="text-size-4 text-muted-foreground">Thinking...</span>
               </div>
@@ -138,8 +142,8 @@ const Index = () => {
         </div>
         
         <div className={cn(
-          "animate-slide-in-bottom",
-          messages.length === 0 ? "border-t border-border" : ""
+          "animate-slide-in-bottom border-t border-border/20",
+          messages.length === 0 ? "" : "glass-morphism"
         )}>
           <ChatMessageInput 
             onSendMessage={handleSendMessage}
