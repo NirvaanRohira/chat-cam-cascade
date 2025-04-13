@@ -126,10 +126,16 @@ export const ChatMessageInput: React.FC<ChatMessageInputProps> = ({
     if ((!message.trim() && !selectedImage) || isLoading) return;
     
     try {
+      console.log('Sending message from input component:', message);
+      console.log('With image:', !!selectedImage);
+      
+      // This calls the parent component's handleSendMessage function
       await onSendMessage(message, selectedImage || undefined);
+      
       setMessage('');
       clearImage();
     } catch (error) {
+      console.error('Error in ChatMessageInput:', error);
       toast({
         title: "Error sending message",
         description: "Please try again later.",

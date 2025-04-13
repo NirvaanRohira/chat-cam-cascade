@@ -59,9 +59,15 @@ const Index = () => {
       // Create FormData object for the webhook
       const formData = new FormData();
       formData.append('message', text);
+      formData.append('timestamp', new Date().toISOString());
+      
       if (image) {
         formData.append('image', image);
       }
+
+      console.log('Sending data to webhook:', WEBHOOK_URL);
+      console.log('Message:', text);
+      console.log('Has image:', !!image);
 
       // Send to n8n webhook
       const response = await fetch(WEBHOOK_URL, {
@@ -70,11 +76,12 @@ const Index = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(`Server responded with ${response.status}: ${await response.text()}`);
       }
 
       // Process response
       const responseData = await response.json();
+      console.log('Received response:', responseData);
       
       // Add bot response to chat
       const botResponse: Message = {
